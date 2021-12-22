@@ -18,7 +18,8 @@ class CreateWirausahasTable extends Migration
             $table->unsignedBigInteger('alumniId')->constrained('alumnis');
             $table->string('namaUsaha');
             $table->string('bidangUsaha');
-            $table->string('tahunMasuk');
+            $table->string('tahunMulai');
+            $table->string('alamat');
             $table->timestamps();
         });
     }

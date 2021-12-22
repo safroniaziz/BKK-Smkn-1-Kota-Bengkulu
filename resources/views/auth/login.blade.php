@@ -1,73 +1,89 @@
-@extends('layouts.app')
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+        <title>Bursa Kerja Khusus SMKN 1 Kota Bengkulu | Login</title>
+        <link rel="shortcut icon" href="{{ asset('assets/images/logo.jpg') }}">
+        <link href="{{ asset('assets/vendors/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href=" {{ asset('css/style_login.css') }} ">
+        <link href="{{ asset('assets/vendors/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
+        <style>
+            .preloader {    position: fixed;    top: 0;    left: 0;    right: 0;    bottom: 0;    background-color: #ffffff;    z-index: 99999;    height: 100%;    width: 100%;    overflow: hidden !important;}.do-loader{    width: 200px;    height: 200px;    position: absolute;    left: 50%;    top: 50%;    margin: 0 auto;    -webkit-border-radius: 100%;       -moz-border-radius: 100%;         -o-border-radius: 100%;            border-radius: 100%;    background-image: url({{ asset('assets/images/logo.jpg') }});    background-size: 80% !important;    background-repeat: no-repeat;    background-position: center;    -webkit-background-size: cover;            background-size: cover;    -webkit-transform: translate(-50%,-50%);       -moz-transform: translate(-50%,-50%);        -ms-transform: translate(-50%,-50%);         -o-transform: translate(-50%,-50%);            transform: translate(-50%,-50%);}.do-loader:before {    content: "";    display: block;    position: absolute;    left: -6px;    top: -6px;    height: calc(100% + 12px);    width: calc(100% + 12px);    border-top: 1px solid #07A8D8;    border-left: 1px solid transparent;    border-bottom: 1px solid transparent;    border-right: 1px solid transparent;    border-radius: 100%;    -webkit-animation: spinning 0.750s infinite linear;       -moz-animation: spinning 0.750s infinite linear;         -o-animation: spinning 0.750s infinite linear;            animation: spinning 0.750s infinite linear;}@-webkit-keyframes spinning {   from {-webkit-transform: rotate(0deg);}   to {-webkit-transform: rotate(359deg);}}@-moz-keyframes spinning {   from {-moz-transform: rotate(0deg);}   to {-moz-transform: rotate(359deg);}}@-o-keyframes spinning {   from {-o-transform: rotate(0deg);}   to {-o-transform: rotate(359deg);}}@keyframes spinning {   from {transform: rotate(0deg);}   to {transform: rotate(359deg);}}
+          </style>
+	</head>
+	<body>
+        <div class="preloader">
+            <div class="do-loader"></div>
+        </div>
+		<div id="particles-js">
+            <div class="loginBox">
+                <img src=" {{ asset('assets/images/logo.jpg') }} " class="user">
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-block" style="font-size:13px;">
+                        <ul style="margin-bottom: 0px !important">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @else
+                    <h6>Form Login Alumni</h6>
+                    <p style="text-align:center; margin-bottom:20px;">Sistem Informasi Bursa Kerja Khusus <br> SMKN 1 Kota Bengkulu</p>
+                @endif
+                <form method="post" action="{{ route('login') }}">
+                    @csrf
+                    <p>Username</p>
+                    <input type="text" value="{{ old('usernameLogin') }}" name="usernameLogin" placeholder="masukan username">
+                    <p>Password</p>
+                    <input type="password" name="password" placeholder="••••••">
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+                    <button type="submit" name="submit" style="margin-bottom:10px;r"><i class="fa fa-sign-in"></i>&nbsp; Login</button>
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <div class="col-md-6 offset-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="form-check-label" for="remember">
-                                        {{ __('Remember Me') }}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Login') }}
-                                </button>
-
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                    <a style="font-weight:100; font-size:12px; color:white;">Belum memiliki akun?</a> <a href="{{ route('register') }}" style="font-weight:100; font-size:12px;" ><u>Daftar Disini</u></a>
+                </form>
             </div>
         </div>
-    </div>
-</div>
-@endsection
+    </body>
+    <script src="{{ asset('assets/vendors/jquery/dist/jquery.min.js') }}"></script>
+    <script type="text/javascript" src=" {{ asset('assets/particles/particles.min.js') }} "></script>
+    <script type="text/javascript" src=" {{ asset('assets/particles/app.js') }} "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    {{-- <script>
+        document.addEventListener('contextmenu', event => event.preventDefault());
+    </script> --}}
+    <script>
+      document.addEventListener('contextmenu', event => event.preventDefault());
+        $(window).on('load', function(){
+        // will first fade out the loading animation
+        jQuery(".status").fadeOut();
+        // will fade out the whole DIV that covers the website.
+        jQuery(".preloader").delay(0).fadeOut("slow");
+
+      });
+      @if(Session::has('message'))
+        var type = "{{ Session::get('alert-type', 'info') }}";
+        switch(type){
+            case 'info':
+            toastr.options = {"closeButton": true,"debug": false,"progressBar": true,"positionClass": "toast-top-right","showDuration": "300","hideDuration": "1000","timeOut": "10000","extendedTimeOut": "1000","showEasing": "swing","hideEasing": "linear","showMethod": "fadeIn","hideMethod": "fadeOut"};
+                toastr.info("{{ Session::get('message') }}");
+                break;
+
+            case 'warning':
+            toastr.options = {"closeButton": true,"debug": false,"progressBar": true,"positionClass": "toast-top-right","showDuration": "300","hideDuration": "1000","timeOut": "10000","extendedTimeOut": "1000","showEasing": "swing","hideEasing": "linear","showMethod": "fadeIn","hideMethod": "fadeOut"};
+                toastr.warning("{{ Session::get('message') }}");
+                break;
+
+            case 'success':
+            toastr.options = {"closeButton": true,"progressBar": true,"positionClass": "toast-top-right","showDuration": "300","hideDuration": "1000","timeOut": "10000","showEasing": "swing","hideEasing": "linear","showMethod": "fadeIn","hideMethod": "fadeOut"};
+                toastr.success("{{ Session::get('message') }}");
+                break;
+
+            case 'error':
+            toastr.options = {"closeButton": true,"progressBar": true,"positionClass": "toast-top-right","showDuration": "300","hideDuration": "1000","timeOut": "10000","showEasing": "swing","hideEasing": "linear","showMethod": "fadeIn","hideMethod": "fadeOut"};
+                toastr.error("{{ Session::get('message') }}");
+                break;
+        }
+      @endif
+    </script>
+</html>

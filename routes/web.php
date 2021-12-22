@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\Alumni\AlumniDashboardController;
+use App\Http\Controllers\Alumni\DataPekerjaanController;
+use App\Http\Controllers\Alumni\DataPendidikanController;
+use App\Http\Controllers\Alumni\DataPersonalController;
+use App\Http\Controllers\Alumni\DataWirausahaCotroller;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Operator\AlumniController;
 use App\Http\Controllers\Operator\JurusanController;
 use App\Http\Controllers\Operator\OperatorDashboardController;
@@ -19,7 +25,35 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
+});
+
+Route::group(['prefix'  => 'alumni/'],function(){
+    Route::post('/',[RegisterController::class, 'alumniRegister'])->name('alumni.register');
+    Route::get('/',[AlumniDashboardController::class, 'dashboard'])->name('alumni.dashboard');
+
+    Route::group(['prefix'  => 'data_personal'],function(){
+        Route::get('/',[DataPersonalController::class, 'index'])->name('alumni.personal');
+        Route::patch('/{id}',[DataPersonalController::class, 'update'])->name('alumni.personal.update');
+    });
+
+    Route::group(['prefix'  => 'data_pendidikan'],function(){
+        Route::get('/',[DataPendidikanController::class, 'index'])->name('alumni.pendidikan');
+        Route::post('/',[DataPendidikanController::class, 'post'])->name('alumni.pendidikan.post');
+        Route::delete('/{id}',[DataPendidikanController::class, 'delete'])->name('alumni.pendidikan.delete');
+    });
+
+    Route::group(['prefix'  => 'data_pekerjaan'],function(){
+        Route::get('/',[DatapekerjaanController::class, 'index'])->name('alumni.pekerjaan');
+        Route::post('/',[DataPekerjaanController::class, 'post'])->name('alumni.pekerjaan.post');
+        Route::delete('/{id}',[DatapekerjaanController::class, 'delete'])->name('alumni.pekerjaan.delete');
+    });
+
+    Route::group(['prefix'  => 'data_wirausaha'],function(){
+        Route::get('/',[DataWirausahaCotroller::class, 'index'])->name('alumni.wirausaha');
+        Route::post('/',[DataWirausahaCotroller::class, 'post'])->name('alumni.wirausaha.post');
+        Route::delete('/{id}',[DataWirausahaCotroller::class, 'delete'])->name('alumni.wirausaha.delete');
+    });
 });
 
 Route::group(['prefix'  => 'operator/'],function(){

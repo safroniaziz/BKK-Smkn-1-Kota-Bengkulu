@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -69,5 +70,39 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    public function alumniRegister(Request $request){
+        Validator::extend('without_spaces', function($attr, $value){
+            return preg_match('/^\S*$/u', $value);
+        });
+        $messages = [
+            'required' => ':attribute harus diisi',
+            'without_spaces'    =>  ':attribute tidak boleh menggunakan spasi'
+        ];
+        $attributes = [
+            'usernameLogin'   =>  'Username Login',
+            'namaLengkap'   =>  'Nama Lengkap',
+            'email'   =>  'Email',
+            'password'   =>  'Password',
+        ];
+        $this->validate($request, [
+            'usernameLogin'    =>  'required|string|without_spaces',
+            'namaLengkap'    =>  'required',
+            'email'    =>  'required|email|string|unique:users',
+            'password'    =>  'required',
+        ],$messages,$attributes);
+        User::create([
+            'usernameLogin' => $request->usernameLogin,
+            'namaAlumni' => $request->namaLengkap,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'status'    =>  'nonaktif',
+        ]);
+        $notification = array(
+            'message' => 'Anda sudah terdaftar, harap untuk menunggu verifikasi dari operator agar bisa login!',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('login')->with($notification);
     }
 }

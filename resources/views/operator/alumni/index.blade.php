@@ -3,12 +3,12 @@
 @section('login_as', 'Operator')
 @section('user-login')
     @if (Auth::check())
-    {{ Auth::user()->nm_user }}
+    {{ Auth::user()->namaAlumni }}
     @endif
 @endsection
 @section('user-login2')
     @if (Auth::check())
-    {{ Auth::user()->nm_user }}
+    {{ Auth::user()->namaAlumni }}
     @endif
 @endsection
 @section('sidebar-menu')
